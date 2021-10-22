@@ -1,3 +1,16 @@
+
+// 자 한번 해보자
+// camera_widget.dart 내부에 ocr 코드를 삽입한다.
+
+
+
+
+
+
+
+
+
+
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -12,7 +25,7 @@ class CameraWidget extends StatefulWidget{
 }
 
 class CameraWidgetState extends State<CameraWidget>{
-  static XFile? imageFile=null;
+  XFile? imageFile=null;
   Future<void>_showChoiceDialog(BuildContext context)
   {
     return showDialog(context: context,builder: (BuildContext context){
@@ -26,7 +39,6 @@ class CameraWidgetState extends State<CameraWidget>{
               ListTile(
                 onTap: (){
                   _openGallery(context);
-                  print('갤러리');
                 },
                 title: Text("Gallery"),
                 leading: Icon(Icons.account_box,color: Colors.blue,),
@@ -36,7 +48,6 @@ class CameraWidgetState extends State<CameraWidget>{
               ListTile(
                 onTap: (){
                   _openCamera(context);
-                  print('카메라');
                 },
                 title: Text("Camera"),
                 leading: Icon(Icons.camera,color: Colors.blue,),
@@ -58,6 +69,9 @@ class CameraWidgetState extends State<CameraWidget>{
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
+              Card(
+                child:( imageFile==null)?Text("Choose Image"): Image.file( File(  imageFile!.path)),
+              ),
               MaterialButton(
                 textColor: Colors.white,
                 color: Colors.pink,
@@ -65,6 +79,7 @@ class CameraWidgetState extends State<CameraWidget>{
                   _showChoiceDialog(context);
                 },
                 child: Text("Select Image"),
+
               )
             ],
           ),
@@ -93,5 +108,5 @@ class CameraWidgetState extends State<CameraWidget>{
     });
     Navigator.pop(context);
   }
-
 }
+

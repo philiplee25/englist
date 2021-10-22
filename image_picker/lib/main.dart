@@ -9,6 +9,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       home: CameraWidget(),
+
     );
   }
 }
+
+
+
+
+// print('경로==================================> ' + imageFile!.path);
