@@ -45,9 +45,9 @@ uploadImage(String title, File file) async{
 
   var responseData = await response.stream.toBytes();
 
-  var result1 = String.fromCharCodes(responseData);
+  var result = String.fromCharCodes(responseData);
 
-  print('formCharCodes =====> ' + result1);
+  print(result);
 
 
 }
