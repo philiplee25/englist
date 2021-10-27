@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget{
        body: Center(
          child: Container(
            child: TextButton(onPressed: (){
-             uploadImage('image', File('assets/111.jpg'));
+             uploadImage('image', File('222.jpg'));
            }, child: Text('Upload'),),
          ),
        ),
@@ -36,8 +36,10 @@ uploadImage(String title, File file) async{
   request.fields['title'] = "first";
   request.headers['Authorization'] = "KakaoAK 3673f1be1964ab5060521c62a015bb2f";
 
-  var picture = http.MultipartFile.fromBytes('image', (await rootBundle.load('assets/111.jpg')).buffer.asUint8List(),
-  filename: '111.jpg');
+  List<String> a = ["assets/222.jpg"];
+
+  var picture = http.MultipartFile.fromBytes('image', (await rootBundle.load(a[0])).buffer.asUint8List(),
+  filename: '222.jpg');
 
   request.files.add(picture);
 
@@ -49,10 +51,8 @@ uploadImage(String title, File file) async{
 
   print('formCharCodes =====> ' + result1);
 
-  var result2 = BASE64.decode(responseData);
-  print('utf8 =====> ' + result2);
-
-
+  var result = utf8.decode(responseData);
+  print(result);
 
 }
 

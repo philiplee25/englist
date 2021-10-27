@@ -39,6 +39,8 @@ dependencies:
   path: ^1.8.0
   http: ^0.13.4
   image_picker: ^0.8.4+3
+  image_cropper: ^1.4.1
+
 
 dev_dependencies:
   flutter_test:
@@ -63,9 +65,10 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+  assets:
+    - assets/111.jpg
+    - assets/222.jpg
+    - assets/333.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

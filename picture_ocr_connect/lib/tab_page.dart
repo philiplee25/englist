@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'ocr_page.dart';
+import 'insert_word_page.dart';
 
 class TabPage extends StatefulWidget {
   @override
