@@ -2,10 +2,11 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
+import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart';
 
 class OcrPage extends StatefulWidget {
   @override
@@ -14,6 +15,9 @@ class OcrPage extends StatefulWidget {
 
 class _OcrPageState extends State<OcrPage> {
 
+  var appDir;
+  var fileName;
+  var savedFile;
   var imageFile = null;
   List<String> a = [];
 
@@ -82,20 +86,27 @@ class _OcrPageState extends State<OcrPage> {
           initAspectRatio: CropAspectRatioPreset.original,
           lockAspectRatio: false),);
     if (croppedImage != null) {
+
+      appDir = await getApplicationDocumentsDirectory();
+      fileName = p.basename(croppedImage.path);
+      savedFile = await croppedImage.copy('${appDir.path}/$fileName');
+      print('==================================fileName====================================' + fileName);
+      print('==================================appDir====================================' + appDir.path);
+      print('==================================savedFile====================================' + savedFile.path);
+
       setState(() {
-        imageFile = croppedImage;
-        print('======================================================================' + imageFile.path.toString());
-        a.add(imageFile..path.toString());
+        imageFile = savedFile;
+        print('==================================imageFile====================================' + imageFile.path);
       });
     }
+
+    uploadImage('image', File(imageFile.path));
   }
 
   Widget _buildBody() {
     return Column(
       children: [
-        imageFile == null ? Text('No Image') :
-            // Image.file(File(imageFile.path))
-            uploadImage('image', File('assets/222.jpg')),
+        imageFile == null ? Text('No Image') : Image.file(File(imageFile.path))
       ],
     );
 
@@ -137,8 +148,10 @@ class _OcrPageState extends State<OcrPage> {
     request.fields['title'] = "first";
     request.headers['Authorization'] = "KakaoAK 3673f1be1964ab5060521c62a015bb2f";
 
-    var picture = http.MultipartFile.fromBytes('image', (await rootBundle.load("assets/222.jpg")).buffer.asUint8List(),
-        filename: '222.jpg');
+    // var picture = http.MultipartFile.fromBytes('image', (await rootBundle.load(savedFile.path)).buffer.asUint8List(),
+    //     filename: fileName);
+
+    var picture = await http.MultipartFile.fromPath('image', imageFile.path, filename: fileName);
 
     request.files.add(picture);
 
@@ -146,11 +159,10 @@ class _OcrPageState extends State<OcrPage> {
 
     var responseData = await response.stream.toBytes();
 
-    var result1 = String.fromCharCodes(responseData);
+    // var result1 = String.fromCharCodes(responseData);
+    // print('formCharCodes =====> ' + result1);
 
-    print('formCharCodes =====> ' + result1);
-
-    var result = utf8.decode(responseData);
+    var result = jsonDecode(utf8.decode(responseData));
     print(result);
 
   }
